@@ -41,6 +41,7 @@
     <Compile Include="Services\BooksService.cs" />
     <Compile Include="Services\IBooksService.cs" />
     <Compile Include="Services\ImageLinks.cs" />
+    <Compile Include="Services\IRestService.cs" />
     <Compile Include="Services\ISimpleRestService.cs" />
     <Compile Include="Services\SimpleRestService.cs" />
     <Compile Include="Services\VolumeInfo.cs" />
