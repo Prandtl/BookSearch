@@ -47,6 +47,8 @@ namespace BookSearch.Droid
 			global::MvvmCross.Binding.Droid.Resource.Styleable.MvxListView = global::BookSearch.Droid.Resource.Styleable.MvxListView;
 			global::MvvmCross.Binding.Droid.Resource.Styleable.MvxListView_MvxDropDownItemTemplate = global::BookSearch.Droid.Resource.Styleable.MvxListView_MvxDropDownItemTemplate;
 			global::MvvmCross.Binding.Droid.Resource.Styleable.MvxListView_MvxItemTemplate = global::BookSearch.Droid.Resource.Styleable.MvxListView_MvxItemTemplate;
+			global::MvvmCross.Plugins.Network.Droid.Resource.String.ApplicationName = global::BookSearch.Droid.Resource.String.ApplicationName;
+			global::MvvmCross.Plugins.Network.Droid.Resource.String.Hello = global::BookSearch.Droid.Resource.String.Hello;
 		}
 		
 		public partial class Attribute
@@ -105,11 +107,11 @@ namespace BookSearch.Droid
 		public partial class Id
 		{
 			
-			// aapt resource value: 0x7f040000
-			public const int MvvmCrossTagId = 2130968576;
+			// aapt resource value: 0x7f050000
+			public const int MvvmCrossTagId = 2131034112;
 			
-			// aapt resource value: 0x7f040001
-			public const int MvxBindingTagUnique = 2130968577;
+			// aapt resource value: 0x7f050001
+			public const int MvxBindingTagUnique = 2131034113;
 			
 			static Id()
 			{
@@ -128,7 +130,10 @@ namespace BookSearch.Droid
 			public const int FirstView = 2130903040;
 			
 			// aapt resource value: 0x7f030001
-			public const int SplashScreen = 2130903041;
+			public const int Item_Book = 2130903041;
+			
+			// aapt resource value: 0x7f030002
+			public const int SplashScreen = 2130903042;
 			
 			static Layout()
 			{
@@ -143,11 +148,11 @@ namespace BookSearch.Droid
 		public partial class String
 		{
 			
-			// aapt resource value: 0x7f060001
-			public const int ApplicationName = 2131099649;
+			// aapt resource value: 0x7f040001
+			public const int ApplicationName = 2130968577;
 			
-			// aapt resource value: 0x7f060000
-			public const int Hello = 2131099648;
+			// aapt resource value: 0x7f040000
+			public const int Hello = 2130968576;
 			
 			static String()
 			{
@@ -162,8 +167,8 @@ namespace BookSearch.Droid
 		public partial class Style
 		{
 			
-			// aapt resource value: 0x7f050000
-			public const int Theme_Splash = 2131034112;
+			// aapt resource value: 0x7f060000
+			public const int Theme_Splash = 2131099648;
 			
 			static Style()
 			{
