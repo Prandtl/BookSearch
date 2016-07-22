@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 using BookSearch.Core.Services;
 using MvvmCross.Core.ViewModels;
 
@@ -7,12 +8,12 @@ namespace BookSearch.Core.ViewModels
 	public class FirstViewModel
 		: MvxViewModel
 	{
-		private readonly IBooksService _booksService;
+		private readonly IAsyncBooksService _booksService;
 
-		public FirstViewModel(IBooksService booksService)
+		public FirstViewModel(IAsyncBooksService booksService)
 		{
 			_booksService = booksService;
-			//_sw = new Stopwatch();
+			_sw = new Stopwatch();
 		}
 
 
@@ -31,24 +32,25 @@ namespace BookSearch.Core.ViewModels
 			get { return _results; }
 			set { SetProperty(ref _results, value); }
 		}
-		/*
-		 * Обновление не сразу а по истечении некоторого времени с последнего обновления Query
+
+		async private void Update()
+		{
+			if (_sw.ElapsedMilliseconds > _timeToThink)
+			{
+				_sw.Reset();
+				_updatedRecently = false;
+			}
+			if (_updatedRecently)
+				return;
+
+			var results =  await _booksService.StartSearchAsync(Query, error => { });
+			Results = results.items;
+			_sw.Start();
+			_updatedRecently = true;
+		}
+
+		private bool _updatedRecently;
 		private Stopwatch _sw;
-		private const int _waitMs = 300;//Количество милисекунд после истечения которых отправляется пакет в Google
-
-		private void OnQueryUpdate()
-		{
-			_sw.Stop();
-
-			
-			
-		}
-		*/
-		private void Update()
-		{
-			_booksService.StartSearchAsync(Query,
-				result => Results = result.items,
-				error => { });
-		}
+		private const int _timeToThink = 300;//Время которое должно пройти с последнего обновления чтобы обновляться снова;
 	}
 }
