@@ -22,7 +22,7 @@ namespace BookSearch.Core.ViewModels
 		public string Query
 		{
 			get { return _query; }
-			set { SetProperty(ref _query, value); }
+			set { SetProperty(ref _query, value); Update();}
 		}
 
 		private List<BookSearchItem> _results;

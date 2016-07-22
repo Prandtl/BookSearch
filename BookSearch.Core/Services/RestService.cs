@@ -7,7 +7,7 @@ using MvvmCross.Platform.Platform;
 
 namespace BookSearch.Core.Services
 {
-	class RestService : IRestService
+	public class RestService : IRestService
 	{
 		private readonly IMvxJsonConverter _jsonConverter;
 

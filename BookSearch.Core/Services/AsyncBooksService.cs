@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace BookSearch.Core.Services
 {
-	class AsyncBooksService : IAsyncBooksService
+	public class AsyncBooksService : IAsyncBooksService
 	{
 		private readonly IRestService _restService;
 
