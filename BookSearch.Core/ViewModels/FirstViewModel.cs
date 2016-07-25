@@ -60,7 +60,7 @@ namespace BookSearch.Core.ViewModels
 		{
 			lock (_lockObject)
 			{
-				_timer.Dispose();
+				_timer?.Dispose();
 				_timer = null;
 				Update();
 			}
@@ -69,8 +69,15 @@ namespace BookSearch.Core.ViewModels
 		private async void Update()
 		{
 			IsUpdating = true;
-			var result = await _booksService.StartSearchAsync(Query, error => { IsUpdating = false; });
-			Results = result.items;
+			try
+			{
+				var result = await _booksService.StartSearchAsync(Query, error => { IsUpdating = false; });
+				Results = result?.items;
+			}
+			catch (Exception e)
+			{
+				Debug.WriteLine(e.Message);
+			}
 			IsUpdating = false;
 		}
 
