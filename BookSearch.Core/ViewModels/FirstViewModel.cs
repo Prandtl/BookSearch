@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using BookSearch.Core.Services;
 using MvvmCross.Core.ViewModels;
+using System.Threading;
 
 namespace BookSearch.Core.ViewModels
 {
@@ -9,48 +11,72 @@ namespace BookSearch.Core.ViewModels
 		: MvxViewModel
 	{
 		private readonly IAsyncBooksService _booksService;
-
 		public FirstViewModel(IAsyncBooksService booksService)
 		{
 			_booksService = booksService;
-			_sw = new Stopwatch();
+
+			_lockObject = new object();
 		}
 
-
 		private string _query;
-
 		public string Query
 		{
 			get { return _query; }
-			set { SetProperty(ref _query, value); Update();}
+			set { SetProperty(ref _query, value); ScheduleUpdate(); }
 		}
 
 		private List<BookSearchItem> _results;
-
 		public List<BookSearchItem> Results
 		{
 			get { return _results; }
 			set { SetProperty(ref _results, value); }
 		}
 
-		async private void Update()
-		{
-			if (_sw.ElapsedMilliseconds > _timeToThink)
-			{
-				_sw.Reset();
-				_updatedRecently = false;
-			}
-			if (_updatedRecently)
-				return;
+		private bool _isUpdating;
 
-			var results =  await _booksService.StartSearchAsync(Query, error => { });
-			Results = results.items;
-			_sw.Start();
-			_updatedRecently = true;
+		public bool IsUpdating
+		{
+			get { return _isUpdating; }
+			set { SetProperty(ref _isUpdating, value); }
 		}
 
-		private bool _updatedRecently;
-		private Stopwatch _sw;
-		private const int _timeToThink = 300;//Время которое должно пройти с последнего обновления чтобы обновляться снова;
+
+		private void ScheduleUpdate()
+		{
+			lock (_lockObject)
+			{
+				if (_timer == null)
+				{
+					_timer = new Timer(OnTimerTick, null, _timeToThink, TimeSpan.Zero);
+				}
+				else
+				{
+					_timer.Change(_timeToThink, TimeSpan.Zero);
+				}
+			}
+		}
+
+		private void OnTimerTick(object state)
+		{
+			lock (_lockObject)
+			{
+				_timer.Dispose();
+				_timer = null;
+				Update();
+			}
+		}
+
+		private async void Update()
+		{
+			IsUpdating = true;
+			var result = await _booksService.StartSearchAsync(Query, error => { IsUpdating = false; });
+			Results = result.items;
+			IsUpdating = false;
+		}
+
+		private Timer _timer;
+		private readonly object _lockObject;
+
+		private readonly TimeSpan _timeToThink = TimeSpan.FromMilliseconds(300);//Время которое должно пройти с последнего обновления чтобы обновляться снова;
 	}
 }
